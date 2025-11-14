@@ -14,7 +14,7 @@ This application is ideal for **E-commerce Sellers:** To rapidly determine the m
 
 A simple look at the interface:
 
-![Application Screenshot](assets/screenshot1.png) 
+![Application Screenshot](assets/screenshot1.PNG) 
 
 ## Credit
 - https://github.com/enzoruiz/3dbinpacking
