@@ -8,7 +8,7 @@ The tool allows users to **quickly check if a given list of items can be packed 
 
 ## Who uses this?
 
-This application is ideal for **E-commerce Sellers:** To rapidly determine the most economical parcel size and avoid surcharges for incorrect dimensions.
+This application is ideal for **E-commerce Sellers** to rapidly determine the most economical parcel size and avoid surcharges for incorrect dimensions.
 
 ## Screenshots
 
