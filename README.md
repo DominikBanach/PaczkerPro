@@ -1,0 +1,20 @@
+# 📦 Simple 3D Parcel Packing Checker (Tkinter / Py3dbp)
+
+## Project Overview
+
+This is a **simple Python GUI application** built with **Tkinter** that uses the **py3dbp** (3D Bin Packing) module.
+
+The tool allows users to **quickly check if a given list of items can be packed into defined parcel sizes**, such as the standard dimensions used by carriers like InPost (or any other configured company).
+
+## Who uses this?
+
+This application is ideal for **E-commerce Sellers:** To rapidly determine the most economical parcel size and avoid surcharges for incorrect dimensions.
+
+## Screenshots
+
+A simple look at the interface:
+
+![Application Screenshot](assets/screenshot1.png) 
+
+## Credit
+- https://github.com/enzoruiz/3dbinpacking
