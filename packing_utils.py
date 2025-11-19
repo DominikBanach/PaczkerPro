@@ -2,12 +2,20 @@ from py3dbp import Packer, Bin, Item
 from config import PARCEL_SIZES
 
 
+def _normalized_item(name, w, h, d, weight):
+    """
+    Calls py3dbp.Item constructor using sorted dimensions.
+    """
+    sorted_dims = sorted([w, h, d], reverse=True)
+    return Item(name, *sorted_dims, weight)
+
+
 def _tuples_to_items(items):
     """
     Returns list of Items based on list of tuples defining them.
     """
     
-    return [Item(*item) for item in items]
+    return [_normalized_item(*item) for item in items]
 
 
 def _get_empty_bin(size):
