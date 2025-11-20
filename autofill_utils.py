@@ -1,6 +1,7 @@
 import csv
 
-def _load_data(path):
+
+def load_data(path):
     """
     Loads csv file form path and returns it as python dict for fast access.
     """
@@ -12,6 +13,7 @@ def _load_data(path):
             try: data[row[0]] = tuple(map(float, row[1:]))
             except ValueError: print(f"Pominięto wiersz z błędem danych: {row}"); continue
     return data
+
 
 def get_item_as_tuple_by_reference(data, ref):
     """

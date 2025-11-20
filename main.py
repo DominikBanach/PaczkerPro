@@ -4,6 +4,8 @@ from tkinter import messagebox
 
 from packing_utils import describe_packability
 
+from autofill_utils import get_item_as_tuple_by_reference, load_data
+
 
 class PaczkerPro(tk.Tk):
     
@@ -11,6 +13,7 @@ class PaczkerPro(tk.Tk):
         super().__init__()
 
         self.items = []
+        self.db = load_data("example.csv")
         
         self.title("PaczkerPro")
         self.geometry("1000x600")
@@ -40,8 +43,11 @@ class PaczkerPro(tk.Tk):
         left_frame.rowconfigure(1, weight=1)
         left_frame.columnconfigure(0, weight=1)
 
+        self.ref_var = tk.StringVar()
+        self.ref_var.trace_add('write', self.on_ref_change)
+
         ref_label = ttk.Label(form_frame, text="Reference:")
-        self.ref_entry = ttk.Entry(form_frame)
+        self.ref_entry = ttk.Entry(form_frame, textvariable=self.ref_var)
 
         ref_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
         self.ref_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
@@ -182,19 +188,34 @@ class PaczkerPro(tk.Tk):
 
 
     def increment_quantity(self):
-        """ Increments quantity. """
+        """
+        Increments quantity.
+        """
         self.quantity_var.set(str(int(self.quantity_var.get()) + 1))
 
 
     def decrement_quantity(self):
-        """ Decrement quantity. """
+        """
+        Decrement quantity.
+        """
         current_qty = int(self.quantity_var.get())
         if current_qty > 1:
             self.quantity_var.set(current_qty - 1)
 
 
+    def on_ref_change(self, var, index, mode):
+        """
+        Checks if given reference is present in csv file and autofills dimensions if so.
+        """
+        item_as_tuple = get_item_as_tuple_by_reference(self.db, self.ref_var.get())
+        if item_as_tuple:
+            self.fill_form(*item_as_tuple)
+
+
     def add_item(self):
-        """ Adds item to the list. """
+        """ 
+        Adds item to the list.
+        """
         ref = str(self.ref_entry.get())
         if not ref:
             messagebox.showerror(title="Input error", message="No Reference.")
@@ -217,9 +238,23 @@ class PaczkerPro(tk.Tk):
         self.clear_form()
         self.update_list()
 
+    
+    def fill_form(self, ref, dim1, dim2, dim3, weight):
+        """
+        Fills form with given data.
+        """
+        self.clear_form()
+        self.ref_entry.insert(0, ref)
+        self.dim1_entry.insert(0, dim1)
+        self.dim2_entry.insert(0, dim2)
+        self.dim3_entry.insert(0, dim3)
+        self.weight_entry.insert(0, weight)
+
 
     def clear_form(self):
-        """ Clears all form's entry widgets. """
+        """ 
+        Clears all form's entry widgets. 
+        """
         self.ref_entry.delete(0, 'end')
         self.dim1_entry.delete(0, 'end')
         self.dim2_entry.delete(0, 'end')
@@ -233,7 +268,6 @@ class PaczkerPro(tk.Tk):
         Updates list widget with self.items content 
         and calls self.update_output.
         """
-
         for row in self.tree.get_children():
             self.tree.delete(row)
 
@@ -248,7 +282,6 @@ class PaczkerPro(tk.Tk):
         Deletes selected items from self.items. 
         Calls self.update_list(). 
         """
-
         ids = self.tree.selection()
 
         if not ids:
@@ -275,14 +308,17 @@ class PaczkerPro(tk.Tk):
         self.update_list()
 
     def delete_all_items(self):
-        """ Deletes all items. """
+        """
+        Deletes all items. 
+        """
         self.items.clear()
         self.update_list()
 
     
     def update_output(self):
-        """ Updates packability description. """
-
+        """ 
+        Updates packability description. 
+        """
         if not self.items:
             output_string = "No items added..."
         else:
