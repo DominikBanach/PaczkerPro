@@ -209,8 +209,9 @@ class PaczkerPro(tk.Tk):
         """
         item_as_tuple = get_item_as_tuple_by_reference(self.db, self.ref_var.get())
         if item_as_tuple:
-            self.fill_form(*item_as_tuple)
-
+            self.fill_form(*item_as_tuple, including_ref=False)
+        else:
+            self.clear_form(including_ref=False)
 
     def add_item(self):
         """ 
@@ -239,23 +240,23 @@ class PaczkerPro(tk.Tk):
         self.update_list()
 
     
-    def fill_form(self, ref, dim1, dim2, dim3, weight):
+    def fill_form(self, ref, dim1, dim2, dim3, weight, including_ref = False):
         """
         Fills form with given data.
         """
-        self.clear_form()
-        self.ref_entry.insert(0, ref)
+        self.clear_form(including_ref=including_ref)
+        if including_ref: self.ref_entry.insert(0, ref)
         self.dim1_entry.insert(0, dim1)
         self.dim2_entry.insert(0, dim2)
         self.dim3_entry.insert(0, dim3)
         self.weight_entry.insert(0, weight)
 
 
-    def clear_form(self):
+    def clear_form(self, including_ref = True):
         """ 
         Clears all form's entry widgets. 
         """
-        self.ref_entry.delete(0, 'end')
+        if including_ref: self.ref_entry.delete(0, 'end')
         self.dim1_entry.delete(0, 'end')
         self.dim2_entry.delete(0, 'end')
         self.dim3_entry.delete(0, 'end')
