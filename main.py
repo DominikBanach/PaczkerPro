@@ -47,7 +47,7 @@ class PaczkerPro(tk.Tk):
         self.ref_var.trace_add('write', self.on_ref_change)
 
         ref_label = ttk.Label(form_frame, text="Reference:")
-        self.ref_entry = ttk.Entry(form_frame, textvariable=self.ref_var)
+        self.ref_entry = tk.Entry(form_frame, textvariable=self.ref_var)
 
         ref_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
         self.ref_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
@@ -210,6 +210,7 @@ class PaczkerPro(tk.Tk):
         item_as_tuple = get_item_as_tuple_by_reference(self.db, self.ref_var.get())
         if item_as_tuple:
             self.fill_form(*item_as_tuple, including_ref=False)
+            self.ref_entry.config(bg="#5cf05c")
         else:
             self.clear_form(including_ref=False)
 
@@ -256,7 +257,10 @@ class PaczkerPro(tk.Tk):
         """ 
         Clears all form's entry widgets. 
         """
+
         if including_ref: self.ref_entry.delete(0, 'end')
+        self.ref_entry.config(bg="white")
+
         self.dim1_entry.delete(0, 'end')
         self.dim2_entry.delete(0, 'end')
         self.dim3_entry.delete(0, 'end')
