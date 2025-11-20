@@ -6,6 +6,8 @@ This is a **simple Python GUI application** built with **Tkinter** that uses the
 
 The tool allows users to **quickly check if a given list of items can be packed into defined parcel sizes**, such as the standard dimensions used by carriers like InPost (or any other configured company).
 
+Data can be entered very fast. **Products dimensions and weight are filled automatically based on reference** if suitable csv file is provided.
+
 ## Who uses this?
 
 This application is ideal for **E-commerce Sellers** to rapidly determine the most economical parcel size and avoid surcharges for incorrect dimensions.
