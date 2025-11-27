@@ -87,17 +87,16 @@ class PaczkerPro(tk.Tk):
 
         minus_button = ttk.Button(quantity_frame, text="-", command=self.decrement_quantity)
         
-        quantity_display_label = ttk.Label(
+        quantity_entry = ttk.Entry(
             quantity_frame, 
             textvariable=self.quantity_var, 
-            width=4,
-            anchor="center"
+            width=4
         )
         
         plus_button = ttk.Button(quantity_frame, text="+", command=self.increment_quantity)
         
         minus_button.grid(row=0, column=0, sticky="w")
-        quantity_display_label.grid(row=0, column=1, padx=5)
+        quantity_entry.grid(row=0, column=1, padx=5)
         plus_button.grid(row=0, column=2, sticky="w")
 
         add_button = ttk.Button(
