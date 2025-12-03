@@ -1,8 +1,9 @@
-from py3dbp import Bin, Item, Packer
+from py3dbp import Bin
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 def visualize_bin(bin : Bin):
-    fig = plt.figure()
+    fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(projection="3d")
     colormap = plt.get_cmap('tab10')
     w, h, d = map(float, (bin.width, bin.height, bin.depth))
@@ -11,12 +12,12 @@ def visualize_bin(bin : Bin):
     ax.set_box_aspect((w/max_dim, h/max_dim, d/max_dim))
 
     # Bin contour
-    ax.plot((0, w, w, 0, 0), (0, 0, h, h, 0), (0, 0, 0, 0, 0), color='black')
-    ax.plot((0, w, w, 0, 0), (0, 0, h, h, 0), (d, d, d, d, d), color='black')
-    ax.plot((0, 0), (0, 0), (0, d), color='black')
-    ax.plot((w, w), (0, 0), (0, d), color='black')
-    ax.plot((w, w), (h, h), (0, d), color='black')
-    ax.plot((0, 0), (h, h), (0, d), color='black')
+    ax.plot((0, w, w, 0, 0), (0, 0, h, h, 0), (0, 0, 0, 0, 0), color='black', linewidth=3)
+    ax.plot((0, w, w, 0, 0), (0, 0, h, h, 0), (d, d, d, d, d), color='black', linewidth=3)
+    ax.plot((0, 0), (0, 0), (0, d), color='black', linewidth=3)
+    ax.plot((w, w), (0, 0), (0, d), color='black', linewidth=3)
+    ax.plot((w, w), (h, h), (0, d), color='black', linewidth=3)
+    ax.plot((0, 0), (h, h), (0, d), color='black', linewidth=3)
 
     # Items as 3d bars
     for i, item in enumerate(bin.items):        
@@ -28,22 +29,12 @@ def visualize_bin(bin : Bin):
     ax.set_ylabel('Height (Y)')
     ax.set_zlabel('Depth (Z)')
 
+    locator = MaxNLocator(nbins=10, integer=True)
+    
+    ax.xaxis.set_major_locator(locator)
+    ax.yaxis.set_major_locator(locator)
+    ax.zaxis.set_major_locator(locator)
+
+    ax.tick_params(axis='both', which='major', labelsize=8, pad=2)
+
     plt.show()
-
-
-if __name__ == "__main__":
-    packer = Packer()
-    packer.add_bin(Bin("InPost/B", 19, 38, 64, 25))
-    packer.add_item(Item('Item 1', 25, 25, 10, 1)) 
-    packer.add_item(Item('Item 2', 10, 7, 10, 1))
-    packer.add_item(Item('Item 3', 10, 8, 2, 1))
-    packer.add_item(Item('Item 4', 10, 10, 10, 1))
-    packer.pack()
-
-    for b in packer.bins:
-        print("Box:", b.name)
-        print("Items:")
-        for item in b.items:
-            print(f" - {item.name} on cords {item.position}")
-            
-        visualize_bin(b)
