@@ -10,7 +10,7 @@ def visualize_bin(bin : Bin):
     fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(projection="3d")
     fig.canvas.manager.set_window_title("PaczkerPro - 3D visualization")
-    ax.set_title(f"Podgląd upakowania {len(bin.items)} elementów do {bin.name}")
+    ax.set_title(f"Visualization of {len(bin.items)} items packed into {bin.name}")
 
     colormap = plt.get_cmap('tab10')
 
