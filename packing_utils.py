@@ -55,11 +55,37 @@ def _try_packing(bin, items):
     return success, packer
 
 
-def _try_packing_into_all_possible_bins(items):
+def try_packing_into_all_possible_bins(items):
     """
     Tries packing given list of items into all possible bins and return list of tuples (success, packer)
     """
     return [_try_packing(bin, _tuples_to_items(items)) for bin in _get_bins_list()]
+
+
+def _check_margin(bin):
+    """
+    Returns margin understood as smallest non-zero length between item and bin face.
+    Returns zero in case of "perfect fit".
+    Returns biggest bin dimension in case of empty bin.
+    """
+    margin = float("inf")
+    tolerance = 1e-2
+    bin_limits = [bin.width, bin.height, bin.depth]
+
+    if not bin.items: return max(bin_limits)
+
+    for item in bin.items:
+        for bin_limit, position, dimension in zip(bin_limits, item.position, item.get_dimension()):
+            local_margin = bin_limit - (position + dimension)
+            if 0 <= local_margin < tolerance: continue
+            margin = min(margin, local_margin)
+
+    if margin < 0:
+        raise ValueError("Calculated margin below zero.")
+    elif margin == float("inf"):
+        return 0.0
+    else:
+        return margin
 
 
 def describe_packability(items):
@@ -67,7 +93,7 @@ def describe_packability(items):
     Returns string describing given items list packability for all avaliable parcel sizes.
     """
 
-    results = _try_packing_into_all_possible_bins(items)
+    results = try_packing_into_all_possible_bins(items)
 
     if not results:
         return ""
@@ -82,6 +108,7 @@ def describe_packability(items):
         unfitted_items_count = len(unfitted_items)
         bin_name = bin.name
         success_icon = '❌' if unfitted_items_count else '✅'
+        margin = _check_margin(bin)
 
         description += f"{success_icon} | {bin_name}"
 
@@ -91,6 +118,6 @@ def describe_packability(items):
                 description += f"\t- {item.name}\n"
 
         else:  
-            description += "\n"
+            description += f"\t margin: {margin:.2f}cm{" ⚠️⚠️⚠️" if margin <= 1 else ""}\n"
     
     return description
