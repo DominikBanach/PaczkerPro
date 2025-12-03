@@ -3,11 +3,18 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
 def visualize_bin(bin : Bin):
+    """
+    Shows 3D visualization for given bin
+    """
+
     fig = plt.figure(figsize=(12, 6))
     ax = fig.add_subplot(projection="3d")
-    colormap = plt.get_cmap('tab10')
-    w, h, d = map(float, (bin.width, bin.height, bin.depth))
+    fig.canvas.manager.set_window_title("PaczkerPro - 3D visualization")
+    ax.set_title(f"Podgląd upakowania {len(bin.items)} elementów do {bin.name}")
 
+    colormap = plt.get_cmap('tab10')
+
+    w, h, d = map(float, (bin.width, bin.height, bin.depth))
     max_dim = max(w, h, d)
     ax.set_box_aspect((w/max_dim, h/max_dim, d/max_dim))
 
