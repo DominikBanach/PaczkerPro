@@ -2,10 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from packing_utils import describe_packability
-
+from packing_utils import describe_packability, try_packing_into_all_possible_bins
 from autofill_utils import get_item_as_tuple_by_reference, load_data
-
+from visualisation_utils import visualize_bin
 
 class PaczkerPro(tk.Tk):
     
@@ -179,7 +178,16 @@ class PaczkerPro(tk.Tk):
         self.output_text.grid(row=0, column=0, sticky='nsew')
         output_scrollbar.grid(row=0, column=1, sticky='ns')
 
-        right_frame.rowconfigure(0, weight=1)
+        visualize_button = ttk.Button(
+            right_frame, 
+            text="3D visualization", 
+            command=self.visualize
+        )
+
+        visualize_button.grid(row=1, column=0, columnspan=2, sticky="e", padx=5, pady=5)
+
+        right_frame.rowconfigure(0, weight=1) 
+        right_frame.rowconfigure(1, weight=0) 
         right_frame.columnconfigure(0, weight=1)
         right_frame.columnconfigure(1, weight=0)
 
@@ -332,6 +340,19 @@ class PaczkerPro(tk.Tk):
         self.output_text.delete('1.0', 'end')
         self.output_text.insert('1.0', output_string)
         self.output_text.config(state='disabled')
+
+    
+    def visualize(self):
+        """
+        Calls visualization_utils.visualize_bin for smallest feasible bin
+        """
+        try:
+            for success, packer in try_packing_into_all_possible_bins(self.items):
+                if success: 
+                    visualize_bin(packer.bins[0])
+                    return
+        except Exception as e:
+            messagebox.showerror("Visualization Error", f"An error occurred: {e}")
         
 
 if __name__ == "__main__":

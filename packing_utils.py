@@ -55,7 +55,7 @@ def _try_packing(bin, items):
     return success, packer
 
 
-def _try_packing_into_all_possible_bins(items):
+def try_packing_into_all_possible_bins(items):
     """
     Tries packing given list of items into all possible bins and return list of tuples (success, packer)
     """
@@ -93,7 +93,7 @@ def describe_packability(items):
     Returns string describing given items list packability for all avaliable parcel sizes.
     """
 
-    results = _try_packing_into_all_possible_bins(items)
+    results = try_packing_into_all_possible_bins(items)
 
     if not results:
         return ""
